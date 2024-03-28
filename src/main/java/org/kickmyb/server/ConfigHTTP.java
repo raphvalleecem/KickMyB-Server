@@ -9,11 +9,6 @@ import org.springframework.stereotype.Component;
 public class ConfigHTTP
         implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
 
-    // TODO replace with a proper interceptor
-    public static void attenteArticifielle(){
-        try {Thread.sleep(1500);} catch (InterruptedException e) {}
-    }
-
     @Override
     public void customize(ConfigurableWebServerFactory factory) {
         // Config du certification auto-signé

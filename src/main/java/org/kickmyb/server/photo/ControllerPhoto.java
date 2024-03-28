@@ -1,7 +1,6 @@
 package org.kickmyb.server.photo;
 
 import org.imgscalr.Scalr;
-import org.kickmyb.server.ConfigHTTP;
 import org.kickmyb.server.account.MUser;
 import org.kickmyb.server.task.ServiceTask;
 import org.kickmyb.transfer.HomeItemPhotoResponse;
@@ -34,7 +33,6 @@ public class ControllerPhoto {
     @PostMapping(value = "/file", produces = "text/plain")
     public ResponseEntity<String> up(@RequestParam("file") MultipartFile file, @RequestParam("taskID") Long taskID) throws IOException {
         System.out.println("PHOTO : upload request " + file.getContentType());
-        ConfigHTTP.attenteArticifielle();
         MPhoto p = servicePhoto.store(file, taskID);
         return ResponseEntity.status(HttpStatus.OK).body(p.id.toString());
     }
@@ -42,7 +40,6 @@ public class ControllerPhoto {
     @GetMapping("/file/{id}")
     public ResponseEntity<byte[]> taskPhoto(@PathVariable Long id, @RequestParam(required = false, name = "width") Integer maxWidth) throws IOException {
         System.out.println("PHOTO : download request " + id + " width " + maxWidth);
-        ConfigHTTP.attenteArticifielle();
         MPhoto pic = servicePhoto.getFile(id);
         if (maxWidth == null) { // no resizing
             return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(pic.blob);
@@ -62,7 +59,6 @@ public class ControllerPhoto {
     @PostMapping(value = "/singleFile", produces = "text/plain")
     public ResponseEntity<String> upSingle(@RequestParam("file") MultipartFile file) throws IOException {
         System.out.println("PHOTO : single upload request " + file.getContentType());
-        ConfigHTTP.attenteArticifielle();
         MPhoto p = servicePhoto.storeSingle(file);
         return ResponseEntity.status(HttpStatus.OK).body(p.id.toString());
     }
@@ -90,7 +86,6 @@ public class ControllerPhoto {
     @GetMapping("/api/home/photo")
     public @ResponseBody List<HomeItemPhotoResponse> homePhoto() {
         System.out.println("KICKB SERVER : Task list  with cookie");
-        ConfigHTTP.attenteArticifielle();
         MUser user = currentUser();
         return serviceTask.homePhoto(user.id);
     }
@@ -99,7 +94,6 @@ public class ControllerPhoto {
     @GetMapping("/api/detail/photo/{id}")
     public @ResponseBody TaskDetailPhotoResponse detailPhoto(@PathVariable long id) {
         System.out.println("KICKB SERVER : Detail  with cookie ");
-        ConfigHTTP.attenteArticifielle();
         MUser user = currentUser();
         return serviceTask.detailPhoto(id, user);
     }
